@@ -5,14 +5,12 @@ from django.db import models
 import re
 import time
 
-from django.conf import settings
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
     PermissionsMixin,
 )
 from django.core.validators import RegexValidator
-from django.db import models
 from django.utils import timezone
 
 
@@ -34,7 +32,6 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 
-
 class NonDeletedManager(models.Manager):
     def get_queryset(self):
         """Return objects that are not soft-deleted by default"""
@@ -44,11 +41,10 @@ class NonDeletedManager(models.Manager):
 class NonDeletedUserManager(NonDeletedManager, CustomUserManager):
     pass
 
+
 class UserType(models.TextChoices):
     USER = "USER", "User"
     PROVIDER = "PROVIDER", "Service Provider"
-
-
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -65,8 +61,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         ],
     )
     address = models.CharField(max_length=100, blank=True)
-    role=models.CharField(max_length=20, choices=UserType.choices, default=UserType.USER)
-    
+    role = models.CharField(
+        max_length=20, choices=UserType.choices, default=UserType.USER
+    )
+
     password_set = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -74,7 +72,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_active = models.DateTimeField(default=timezone.now)
 
     deleted_at = models.DateTimeField(null=True, blank=True)
-
 
     objects = NonDeletedUserManager()
     all_objects = CustomUserManager()
@@ -107,5 +104,3 @@ class User(AbstractBaseUser, PermissionsMixin):
             return "Deleted User"
         else:
             return f"{self.name}"
-
-    
