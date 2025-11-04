@@ -1,7 +1,6 @@
 from django.contrib import admin
 
 # Register your models here.
-from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 from .models import User
@@ -9,10 +8,8 @@ from .models import User
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
-    
-
     model = User
-    list_display = ["email", "name",  "is_staff"]
+    list_display = ["email", "name", "is_staff"]
     list_filter = ["is_staff"]
     fieldsets = [
         (
@@ -20,12 +17,10 @@ class UserAdmin(BaseUserAdmin):
             {
                 "fields": [
                     ("name"),
-                    
                     ("email", "phone_number"),
                     "password",
                     "role",
                     ("is_staff", "is_active", "password_set"),
-                   
                 ]
             },
         ),
@@ -51,4 +46,3 @@ class UserAdmin(BaseUserAdmin):
         self.message_user(request, f"{restored_account} user(s) successfully restored.")
 
     actions = ["restore_user"]
-
