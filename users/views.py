@@ -1,5 +1,6 @@
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.decorators import action
 
 # Create your views here.
 from rest_framework.viewsets import ModelViewSet
@@ -28,3 +29,14 @@ class UserViewSet(ModelViewSet):
         user.set_password(data["password"])
         user.save()
         return Response(status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=["GET", "PUT", "PATCH"], name="View/Update Profile")
+    def profile(self, request):
+        user = request.user
+        if request.method == "GET":
+            serializer = self.get_serializer(user)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        serializer = self.get_serializer(user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
