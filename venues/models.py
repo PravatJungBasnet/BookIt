@@ -1,5 +1,6 @@
 from django.db import models
 from users.models import UserType
+from datetime import timedelta
 
 
 # Create your models here.
@@ -47,22 +48,25 @@ class Venues(models.Model):
         return Venues.objects.all()
 
 
-"""class SlotConfigurationn(models.Model):
-    venue=models.ForeignKey("venues.Venues", on_delete=models.CASCADE)
-    start_time=models.TimeField()
-    end_time=models.TimeField()
-    duration=models.DurationField(default=timedelta(minutes=60))
-    #Pricing
-    base_price_hour=models.FloatField()
-    weekend_price_hour=models.FloatField()
+class SlotConfigurationn(models.Model):
+    venue = models.ForeignKey("venues.Venues", on_delete=models.CASCADE)
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+    duration = models.DurationField(default=timedelta(minutes=60))
+    # Pricing
+    base_price_hour = models.FloatField()
+    weekend_price_hour = models.FloatField(null=True, blank=True)
 
-#stores each of those available time periods for each date.
+
 class TimeSlot(models.Model):
-    venue=models.ForeignKey("venues.Venues", on_delete=models.CASCADE)
-    slot_condiguartion=models.ForeignKey("venues.SlotConfigurationn", on_delete=models.CASCADE)
-    date=models.DateField()
-    start_time=models.TimeField()
-    end_time=models.TimeField()
-    price=models.FloatField()
-    status=models.CharField(max_length=50,choices=TimeSlotStatus.choices, default=TimeSlotStatus.AVAILABLE)
-    """
+    venue = models.ForeignKey("venues.Venues", on_delete=models.CASCADE)
+    slot_condiguartion = models.ForeignKey(
+        "venues.SlotConfigurationn", on_delete=models.CASCADE
+    )
+    date = models.DateField()
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+    price = models.FloatField()
+    status = models.CharField(
+        max_length=50, choices=TimeSlotStatus.choices, default=TimeSlotStatus.AVAILABLE
+    )
