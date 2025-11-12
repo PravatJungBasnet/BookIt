@@ -1,4 +1,4 @@
-from .models import Venues, SlotConfigurationn, TimeSlot
+from .models import Venues, SlotConfigurationn, TimeSlot, Sport
 from rest_framework.serializers import ModelSerializer
 
 
@@ -26,12 +26,19 @@ class VenueSerializer(ModelSerializer):
         ]
 
 
+class SportSerializer(ModelSerializer):
+    class Meta:
+        model = Sport
+        fields = ["id", "name", "icon"]
+
+
 class SlotConfigurationSerializer(ModelSerializer):
     class Meta:
         model = SlotConfigurationn
         fields = [
             "id",
             "venue",
+            "sport",
             "start_time",
             "end_time",
             "duration",

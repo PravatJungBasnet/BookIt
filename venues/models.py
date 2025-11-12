@@ -47,9 +47,23 @@ class Venues(models.Model):
 
         return Venues.objects.all()
 
+    def __str__(self):
+        return self.name
+
+
+class Sport(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    icon = models.ImageField(upload_to="sport", blank=True)
+
+    def __str__(self):
+        return self.name
+
 
 class SlotConfigurationn(models.Model):
     venue = models.ForeignKey("venues.Venues", on_delete=models.CASCADE)
+    sport = models.ForeignKey(
+        "venues.Sport", on_delete=models.CASCADE, null=True, blank=True
+    )
     start_time = models.TimeField()
     end_time = models.TimeField()
     duration = models.DurationField(default=timedelta(minutes=60))
