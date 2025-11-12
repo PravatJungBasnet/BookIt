@@ -1,9 +1,10 @@
-from .models import Venues, SlotConfigurationn, TimeSlot
+from .models import Venues, SlotConfigurationn, TimeSlot, Sport
 from django.shortcuts import get_object_or_404
 from .serializers import (
     VenueSerializer,
     SlotConfigurationSerializer,
     TimeSlotSerializer,
+    SportSerializer,
 )
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.viewsets import ReadOnlyModelViewSet
@@ -35,6 +36,11 @@ class SlotConfigurationViewSet(ModelViewSet):
         venue_id = self.kwargs.get("venue_id")
         venue = get_object_or_404(Venues, id=venue_id)
         serializer.save(venue=venue)
+
+
+class SportviewSet(ModelViewSet):
+    queryset = Sport.objects.all()
+    serializer_class = SportSerializer
 
 
 class TimeSlotView(ReadOnlyModelViewSet):

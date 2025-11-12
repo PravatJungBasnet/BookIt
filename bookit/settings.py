@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "users",
     "venues",
+    "bookings",
 ]
 AUTH_USER_MODEL = "users.User"
 
